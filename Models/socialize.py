@@ -4,6 +4,7 @@ from Models.district import District
 from Models.covid_factor import CovidFactor
 from Models.price_category import PriceCategory
 
+
 class Socialize(BaseModel):
     name: str
     price_category: PriceCategory
@@ -16,5 +17,6 @@ class Socialize(BaseModel):
     url: str = None
     created_at: datetime = datetime.now()
 
-socialize = { "name": "Tiki Vavoom", "price_category": "average", "district": "Centrum", "category": "bar"}
+
+socialize = {"name": "Tiki Vavoom", "price_category": "average", "district": "Centrum", "category": "bar"}
 socialize_object = Socialize(**socialize)

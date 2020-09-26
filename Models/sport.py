@@ -4,6 +4,7 @@ from Models.district import District
 from Models.covid_factor import CovidFactor
 from Models.price_category import PriceCategory
 
+
 class Sport(BaseModel):
     name: str
     type: str
@@ -17,5 +18,6 @@ class Sport(BaseModel):
     url: str = None
     created_at: datetime = datetime.now()
 
-sport = { "type": "climbing", "name": "Klimmuur Hollands Spoor", "environment": "indoor", "district": "Centrum"}
+
+sport = {"type": "climbing", "name": "Klimmuur Hollands Spoor", "environment": "indoor", "district": "Centrum"}
 sport_object = Sport(**sport)

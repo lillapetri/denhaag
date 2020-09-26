@@ -6,11 +6,12 @@ from Models.covid_factor import CovidFactor
 from Models.price_category import PriceCategory
 import enum
 
+
 class Category(str, enum.Enum):
     eat_in: str = "eat in"
     order: str = "order"
     take_away: str = "take away"
-    cook: str  = "cook"
+    cook: str = "cook"
 
 class Food(BaseModel):
     name: str
@@ -25,6 +26,7 @@ class Food(BaseModel):
     url: str = None
     created_at: datetime = datetime.now()
 
-food = { "name": "L'oro di Napoli", "price_category": "average", "district": "Segbroek",
-          "cuisine": "Italian", "category": { "eat in", "order", "take away"} }
+
+food = {"name": "L'oro di Napoli", "price_category": "average", "district": "Segbroek",
+        "cuisine": "Italian", "category": {"eat in", "order", "take away"}}
 food_object = Food(**food)
