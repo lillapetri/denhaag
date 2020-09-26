@@ -4,11 +4,11 @@ from Models.covid_factor import CovidFactor
 from Models.price_category import PriceCategory
 
 
-class Learn(BaseModel):
+class Learning(BaseModel):
     language: str = 'English'
-    price_category: PriceCategory
+    price_category: PriceCategory = None
     subject: str = None
-    platform: 'str'
+    platform: str
     votes: int = 0
     description: str = None
     covid_factor: CovidFactor = 'Safe'
@@ -16,5 +16,5 @@ class Learn(BaseModel):
     created_at: datetime = datetime.now()
 
 
-learn = {"language": "Dutch", "price_category": "average", "subject": "language", "platform": "online"}
-learn_object = Learn(**learn)
+learning = {"language": "Dutch", "price_category": "average", "subject": "language", "platform": "online"}
+learning_object = Learning(**learning)

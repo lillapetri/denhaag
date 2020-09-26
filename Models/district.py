@@ -1,5 +1,6 @@
 from enum import Enum
 
+
 class District(str, Enum):
     centrum: str = "Centrum"
     escamp: str = "Escamp"
@@ -7,5 +8,5 @@ class District(str, Enum):
     laak: str = "Laak"
     leidscheveen_ypenburg: str = "Leidscheveen-Ypenburg"
     loosduinen: str = "Leoosduinen"
-    scheveningen: str  = "Scheveningen"
-    segbroek: str  = "Segbroek"
+    scheveningen: str = "Scheveningen"
+    segbroek: str = "Segbroek"

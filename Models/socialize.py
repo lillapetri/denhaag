@@ -5,7 +5,7 @@ from Models.covid_factor import CovidFactor
 from Models.price_category import PriceCategory
 
 
-class Socialize(BaseModel):
+class Social(BaseModel):
     name: str
     price_category: PriceCategory
     category: str = None
@@ -18,5 +18,5 @@ class Socialize(BaseModel):
     created_at: datetime = datetime.now()
 
 
-socialize = {"name": "Tiki Vavoom", "price_category": "average", "district": "Centrum", "category": "bar"}
-socialize_object = Socialize(**socialize)
+social = {"name": "Tiki Vavoom", "price_category": "average", "district": "Centrum", "category": "bar"}
+social_object = Social(**social)

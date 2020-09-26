@@ -4,7 +4,8 @@ from Models.district import District
 from Models.covid_factor import CovidFactor
 from Models.price_category import PriceCategory
 
-class Entertain(BaseModel):
+
+class Entertainment(BaseModel):
     name: str
     price_category: PriceCategory
     category: str = None
@@ -16,6 +17,7 @@ class Entertain(BaseModel):
     url: str = None
     created_at: datetime = datetime.now()
 
-entertain = { "name": "Harry Potter", "price_category": "average", "district": "Centrum",
-          "category": "movies" }
-entertain_object = Entertain(**entertain)
+
+entertainment = {"name": "Harry Potter", "price_category": "average", "district": "Centrum",
+             "category": "movies"}
+entertainment_object = Entertainment(**entertainment)

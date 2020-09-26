@@ -15,8 +15,8 @@ class Category(str, enum.Enum):
 
 class Food(BaseModel):
     name: str
-    price_category: PriceCategory
-    category: Set[Category]
+    price_category: PriceCategory = None
+    category: Set[Category] = None
     district: District
     address: str = None
     cuisine: str
