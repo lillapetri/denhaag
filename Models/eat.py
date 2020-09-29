@@ -1,10 +1,11 @@
-from datetime import datetime
-from pydantic import BaseModel
-from typing import Optional, Set
-from Models.district import District
-from Models.covid_factor import CovidFactor
-from Models.price_category import PriceCategory
 import enum
+from datetime import datetime
+from typing import Set
+
+from Models.covid_factor import CovidFactor
+from Models.district import District
+from Models.price_category import PriceCategory
+from pydantic import BaseModel
 
 
 class Category(str, enum.Enum):
@@ -12,6 +13,7 @@ class Category(str, enum.Enum):
     order: str = "order"
     take_away: str = "take away"
     cook: str = "cook"
+
 
 class Food(BaseModel):
     name: str

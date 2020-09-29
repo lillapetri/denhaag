@@ -4,7 +4,10 @@ from Models.learn import Learning, learning_object
 from Models.socialize import Social, social_object
 from Models.sport import Sport, sport_object
 from Models.travel import Travel, travel_object
-from fastapi import Body, FastAPI
+from Utils.security import authenticate, create_jwt_token
+from fastapi import Body, Depends, FastAPI, HTTPException
+from fastapi.security import OAuth2PasswordRequestForm
+from starlette.status import HTTP_401_UNAUTHORIZED
 
 app_v1 = FastAPI(root_path='/v1')
 
@@ -20,6 +23,19 @@ async def get_all():
 @app_v1.get('/test')
 async def test_connection():
     return {'Connection established.'}
+
+
+# Get token
+@app_v1.post('/login')
+async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
+    username = form_data.username
+    password = form_data.password
+    user = authenticate(username, password)
+    if user is None:
+        raise HTTPException(status_code=HTTP_401_UNAUTHORIZED)
+    else:
+        token = create_jwt_token(username)
+        return token
 
 
 # Get all data in food category
