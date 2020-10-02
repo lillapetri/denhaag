@@ -24,15 +24,16 @@ async def test_connection():
 
 # Create admin
 @app.post('/user', tags=['Create admin(s) who can manage database'], status_code=HTTP_201_CREATED)
-async def new_user(form_data: OAuth2PasswordRequestForm = Depends()):
-    username = form_data.username
-    password = form_data.password
+async def create_new_admin(user: UserIn):
+    username = user.username
+    password = user.password
+    role = user.role
     user_in_db = {'username': username, 'hashed_password': get_hashed_password(password), 'is_active': True,
-                  'created_at': datetime.utcnow(), 'id': uuid4(), 'role': 'admin'}
+                  'created_at': datetime.utcnow(), 'id': uuid4(), 'role': role}
     try:
-        result = await db_insert_user(user_in_db)
-        if result is not None:
-            return HTTP_201_CREATED
+        new_user = await db_insert_user(user_in_db)
+        if new_user is not None:
+            return {'response': f"{new_user} {user_in_db['role']} is created"}
     except Exception as e:
         detail = 'Something went wrong. Please try again.'
         if hasattr(e, 'detail'):
@@ -62,7 +63,7 @@ async def middleware(request: Request, call_next):
     if request.method != 'GET' and not str(request.url).__contains__('login'):
         try:
             jwt_token = request.headers['Authorization'].split('Bearer ')[1]
-            is_valid = check_jwt_token(jwt_token)
+            is_valid = await check_jwt_token(jwt_token)
         except Exception as e:
             is_valid = False
         if not is_valid:

@@ -20,20 +20,21 @@ async def disconnect_db(db):
 async def execute(query, is_many, values):
     db = await connect_db()
     if is_many:
-        await db.execute_many(query=query, values=values)
+        result = await db.execute_many(query=query, values=values)
     else:
-        await db.execute(query=query, values=values)
+        result = await db.execute(query=query, values=values)
     await disconnect_db(db)
+    return result
 
 
 async def fetch(query, is_one, values=None):
     db = await connect_db()
     if is_one:
         result = await db.fetch_one(query=query, values=values)
-        if result is None:
-            out = None
-        else:
+        if result is not None:
             out = dict(result)
+        else:
+            out = None
     else:
         result = await db.fetch_all(query=query, values=values)
         if result is None:

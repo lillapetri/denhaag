@@ -5,8 +5,8 @@ from pydantic import BaseModel
 
 
 class UserRole(str, Enum):
-    admin: str = "Admin"
-    user: str = "User"
+    admin: str = "admin"
+    user: str = "user"
 
 
 class UserIn(BaseModel):
@@ -25,9 +25,9 @@ class UserOut(BaseModel):
 class UserInDB(BaseModel):
     username: str
     hashed_password: str
-    role: UserRole
     is_active: bool = True
-    created_at: datetime
+    created_at: datetime = datetime.utcnow()
+    role: UserRole
 
-# user = {"username": "test", "password": "pass1", "role": "Admin"}
+# user = {"username": "test", "password": "pass1", "role": "admin"}
 # user_object = UserIn(**user)
