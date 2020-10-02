@@ -1,10 +1,8 @@
 import enum
 from datetime import datetime
-from typing import Set
 
 from Models.covid_factor import CovidFactor
 from Models.district import District
-from Models.price_category import PriceCategory
 from pydantic import BaseModel
 
 
@@ -17,16 +15,17 @@ class Category(str, enum.Enum):
 
 class Food(BaseModel):
     name: str
-    price_category: PriceCategory = None
-    category: Set[Category] = None
-    district: District
     address: str = None
     cuisine: str
     votes: int = 0
     description: str = None
-    covid_factor: CovidFactor = 'Moderate risk'
     url: str = None
     created_at: datetime = datetime.now()
+    covid_factor: CovidFactor = 'Moderate risk'
+    district: District
+    price_category: str = None
+    id: str = None
+    # category: Set[Category] = None
 
 
 food = {"name": "L'oro di Napoli", "price_category": "average", "district": "Segbroek",

@@ -1,34 +1,17 @@
 import nest_asyncio
-from Utils.constants import DB_ADMIN, DB_HOST, DB_NAME, DB_PASSWORD
-from databases import Database
-
+from Utils.db_object import db
 nest_asyncio.apply()
 
 
-async def connect_db():
-    db = Database(f'postgresql://{DB_HOST}/{DB_NAME}?user={DB_ADMIN}&password={DB_PASSWORD}')
-    await db.connect()
-    print('DB connected.')
-    return db
-
-
-async def disconnect_db(db):
-    await db.disconnect()
-    print("DB disconnected")
-
-
 async def execute(query, is_many, values):
-    db = await connect_db()
     if is_many:
         result = await db.execute_many(query=query, values=values)
     else:
         result = await db.execute(query=query, values=values)
-    await disconnect_db(db)
     return result
 
 
 async def fetch(query, is_one, values=None):
-    db = await connect_db()
     if is_one:
         result = await db.fetch_one(query=query, values=values)
         if result is not None:
@@ -43,7 +26,6 @@ async def fetch(query, is_one, values=None):
             out = []
             for row in result:
                 out.append(dict(row))
-    await disconnect_db(db)
     return out
 
 # query = "insert into food values(:name, :address, :cuisine, :votes, :description, :url, :created_at, :covid_factor, " \

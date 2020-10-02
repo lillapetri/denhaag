@@ -21,7 +21,7 @@ async def db_check_user(user):
 
 
 async def db_check_username(username):
-    query = """select * from users where username = :username"""
+    query = '''select * from users where username = :username'''
     values = {'username': username}
     result = await fetch(query, True, values)
     if result is None:
@@ -31,7 +31,46 @@ async def db_check_username(username):
 
 
 async def db_insert_user(user):
-    query = "insert into users values(:username, :hashed_password, :is_active, :created_at, :id, :role) returning username"
+    query = '''insert into users values(:username, :hashed_password, :is_active, :created_at, :id, :role) returning 
+    username '''
     values = dict(user)
     result = await execute(query, False, values)
+    return result
+
+
+async def db_insert_food(food):
+    query = '''insert into food values(:name, :address, :cuisine, :votes, :description, :url, :created_at, 
+    :covid_factor, :district, :id, :price_category) returning name '''
+    values = dict(food)
+    result = await execute(query, False, values)
+    return result
+
+
+async def db_insert_learning(learning):
+    query = '''insert into learning values(:name, :language, :price_category, :subject, :platform, :votes, 
+    :description, :covid_factor, :url, :created_at, :id) returning name '''
+    values = dict(learning)
+    result = await execute(query, False, values)
+    return result
+
+
+async def db_insert_sport(sport):
+    query = '''insert into sport values(:name, :type, :price_category, :environment, :district, :address, :votes, 
+    :description, :covid_factor, :url, :created_at, :id) returning name '''
+    values = dict(sport)
+    result = await execute(query, False, values)
+    return result
+
+
+async def db_insert_travel(travel):
+    query = '''insert into travel values(:name, :distance_in_km, :votes, :programs, :description, :covid_factor, 
+    :url, :created_at, :id) returning name '''
+    values = dict(travel)
+    result = await execute(query, False, values)
+    return result
+
+
+async def db_fetch_category(category):
+    query = f'select * from {category}'
+    result = await fetch(query, False)
     return result

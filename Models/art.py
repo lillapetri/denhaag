@@ -1,8 +1,9 @@
 from datetime import datetime
-from pydantic import BaseModel
-from Models.district import District
+
 from Models.covid_factor import CovidFactor
+from Models.district import District
 from Models.price_category import PriceCategory
+from pydantic import BaseModel
 
 
 class Entertainment(BaseModel):

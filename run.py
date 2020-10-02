@@ -4,6 +4,7 @@ from uuid import uuid4
 from API.v1 import app_v1
 from Models.user import UserIn
 from Utils.db_functions import db_insert_user
+from Utils.db_object import db
 from Utils.security import authenticate, check_jwt_token, create_jwt_token, get_hashed_password
 from fastapi import Depends, FastAPI, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
@@ -13,18 +14,30 @@ from starlette.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_401_UN
 
 app = FastAPI(title="What to do in the Hague?", description="Freetime activities collected in and around the Hague",
               version='1.0.0')
-app.include_router(app_v1, prefix='/v1', dependencies=[Depends(check_jwt_token)])
+app.include_router(app_v1, prefix='/v1')
+
+
+@app.on_event('startup')
+async def connect_db():
+    await db.connect()
+    print('DB connected.')
+
+
+@app.on_event('shutdown')
+async def disconnect_db():
+    await db.disconnect()
+    print("DB disconnected")
 
 
 # Test API route
-@app.get('/test', tags=['Test connection'])
+@app.get('/', tags=['Test connection'])
 async def test_connection():
     return {'Connection established.'}
 
 
 # Create admin
-@app.post('/user', tags=['Create admin(s) who can manage database'], status_code=HTTP_201_CREATED)
-async def create_new_admin(user: UserIn):
+@app.post('/user', tags=['Create user or admin.'], status_code=HTTP_201_CREATED)
+async def create_new_user(user: UserIn):
     username = user.username
     password = user.password
     role = user.role

@@ -1,11 +1,12 @@
 from datetime import datetime
-from pydantic import BaseModel
-from Models.district import District
+
 from Models.covid_factor import CovidFactor
+from Models.district import District
 from Models.price_category import PriceCategory
+from pydantic import BaseModel
 
 
-class Social(BaseModel):
+class Part(BaseModel):
     name: str
     price_category: PriceCategory
     category: str = None
@@ -18,5 +19,6 @@ class Social(BaseModel):
     created_at: datetime = datetime.now()
 
 
-social = {"name": "Tiki Vavoom", "price_category": "average", "district": "Centrum", "category": "bar"}
-social_object = Social(**social)
+party = {"name": "Harry Potter", "price_category": "average", "district": "Centrum",
+         "category": "movies"}
+party_object = Part(**party)
