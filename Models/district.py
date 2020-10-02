@@ -7,6 +7,6 @@ class District(str, Enum):
     haagse_hout: str = "Haagse Hout"
     laak: str = "Laak"
     leidscheveen_ypenburg: str = "Leidscheveen-Ypenburg"
-    loosduinen: str = "Leoosduinen"
+    loosduinen: str = "Loosduinen"
     scheveningen: str = "Scheveningen"
     segbroek: str = "Segbroek"

@@ -12,7 +12,7 @@ class UserRole(str, Enum):
 class UserIn(BaseModel):
     username: str
     password: str
-    role: UserRole = 'User'
+    role: UserRole = 'admin'
     is_active: bool = True
     created_at: datetime = datetime.now()
 
@@ -26,7 +26,7 @@ class UserInDB(BaseModel):
     username: str
     hashed_password: str
     role: UserRole
-    is_active: bool
+    is_active: bool = True
     created_at: datetime
 
 # user = {"username": "test", "password": "pass1", "role": "Admin"}

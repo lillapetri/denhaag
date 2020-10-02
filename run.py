@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from API.v1 import app_v1
+from Models.user import UserIn
 from Utils.security import authenticate, check_jwt_token, create_jwt_token
 from fastapi import Depends, FastAPI, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
@@ -24,11 +25,13 @@ async def test_connection():
 async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
     username = form_data.username
     password = form_data.password
-    user = authenticate(username, password)
-    if user is None:
+    user = {'username': username, 'password': password}
+    user_dict = UserIn(**user)
+    result = await authenticate(user_dict)
+    if result is None:
         raise HTTPException(status_code=HTTP_401_UNAUTHORIZED)
     else:
-        token = create_jwt_token(user)
+        token = create_jwt_token(result)
         return token
 
 

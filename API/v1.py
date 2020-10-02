@@ -17,7 +17,6 @@ async def get_all():
             'entertainment': entertainment_object, 'travel': travel_object}
 
 
-
 # Get all data in food category
 @app_v1.get('/food', tags=['Food category'])
 async def get_food_category():
