@@ -1,4 +1,4 @@
-from Utils.db import fetch
+from Utils.db import execute, fetch
 from passlib.context import CryptContext
 
 pwd_context = CryptContext(schemes=['bcrypt'])
@@ -28,3 +28,10 @@ async def db_check_username(username):
         return False
     else:
         return True
+
+
+async def db_insert_user(user):
+    query = """insert into users values(:username, :hashed_password, :is_active, :created_at, :id, :role)"""
+    values = dict(user)
+    result = await execute(query, False, values)
+    return result

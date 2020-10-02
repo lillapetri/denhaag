@@ -1,13 +1,15 @@
 from datetime import datetime
+from uuid import uuid4
 
 from API.v1 import app_v1
 from Models.user import UserIn
-from Utils.security import authenticate, check_jwt_token, create_jwt_token
+from Utils.db_functions import db_insert_user
+from Utils.security import authenticate, check_jwt_token, create_jwt_token, get_hashed_password
 from fastapi import Depends, FastAPI, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
 from starlette.requests import Request
 from starlette.responses import Response
-from starlette.status import HTTP_401_UNAUTHORIZED
+from starlette.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_401_UNAUTHORIZED
 
 app = FastAPI(title="What to do in the Hague?", description="Freetime activities collected in and around the Hague",
               version='1.0.0')
@@ -18,6 +20,24 @@ app.include_router(app_v1, prefix='/v1', dependencies=[Depends(check_jwt_token)]
 @app.get('/test', tags=['Test connection'])
 async def test_connection():
     return {'Connection established.'}
+
+
+# Create admin
+@app.post('/user', tags=['Create admin(s) who can manage database'], status_code=HTTP_201_CREATED)
+async def new_user(form_data: OAuth2PasswordRequestForm = Depends()):
+    username = form_data.username
+    password = form_data.password
+    user_in_db = {'username': username, 'hashed_password': get_hashed_password(password), 'is_active': True,
+                  'created_at': datetime.utcnow(), 'id': uuid4(), 'role': 'admin'}
+    try:
+        result = await db_insert_user(user_in_db)
+        if result is not None:
+            return HTTP_201_CREATED
+    except Exception as e:
+        detail = 'Something went wrong. Please try again.'
+        if hasattr(e, 'detail'):
+            detail = e.detail
+        raise HTTPException(status_code=HTTP_400_BAD_REQUEST, detail=detail)
 
 
 # Get token

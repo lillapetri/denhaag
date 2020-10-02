@@ -20,7 +20,7 @@ async def disconnect_db(db):
 async def execute(query, is_many, values):
     db = await connect_db()
     if is_many:
-        await db.execute(query=query, values=values)
+        await db.execute_many(query=query, values=values)
     else:
         await db.execute(query=query, values=values)
     await disconnect_db(db)

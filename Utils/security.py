@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 from time import time
 
 import jwt
-from Models.user import UserIn, UserInDB, UserOut
+from Models.user import UserOut
 from Utils.constants import JWT_ALGORITHM, JWT_EXPIRATION_TIME_MINUTES, JWT_SECRET_KEY
 from Utils.db_functions import db_check_user, db_check_username
 from fastapi import Depends
@@ -46,7 +46,6 @@ async def check_jwt_token(token: str = Depends(oauth_schema)):
             if is_valid:
                 return final_checks(role)
     except Exception as e:
-        print(e)
         return False
     return False
 
@@ -61,10 +60,4 @@ def final_checks(role: str):
     return False
 
 
-def save_user(user_in: UserIn):
-    hashed_password = get_hashed_password(user_in.password)
-    saved_user = UserInDB(**user_in.dict(), hashed_password=hashed_password)
-    print("User saved! ..not really")
-    print(saved_user)
-    return saved_user
 
