@@ -19,5 +19,3 @@ class Social(BaseModel):
     created_at: datetime = datetime.now()
 
 
-social = {"name": "Tiki Vavoom", "price_category": "average", "district": "Centrum", "category": "bar"}
-social_object = Social(**social)

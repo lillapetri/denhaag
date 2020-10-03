@@ -18,8 +18,3 @@ class Sport(BaseModel):
     covid_factor: CovidFactor = 'Moderate risk'
     url: str = None
     created_at: datetime = datetime.now()
-
-
-sport = {"type": "climbing", "name": "Klimmuur Hollands Spoor", "environment": "indoor", "district": "Centrum",
-         "url": ""}
-sport_object = Sport(**sport)

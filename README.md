@@ -5,4 +5,6 @@ Stack I'm planning to use:
 - back-end (Python): FastAPI, PostgreSQL, Docker
 - front-end (Typescript/Javascript): Next.js
 
+![Mockup of the landing page](https://github.com/lillapetri/denhaag/blob/master/denhaag_hero_mockup.jpg)
+
 This project is in development phase.

@@ -6,7 +6,7 @@ from Models.price_category import PriceCategory
 from pydantic import BaseModel
 
 
-class Part(BaseModel):
+class Party(BaseModel):
     name: str
     price_category: PriceCategory
     category: str = None
@@ -17,8 +17,3 @@ class Part(BaseModel):
     covid_factor: CovidFactor = 'High risk'
     url: str = None
     created_at: datetime = datetime.now()
-
-
-party = {"name": "Harry Potter", "price_category": "average", "district": "Centrum",
-         "category": "movies"}
-party_object = Part(**party)

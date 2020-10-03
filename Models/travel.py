@@ -16,5 +16,3 @@ class Travel(BaseModel):
     created_at: datetime = datetime.now()
 
 
-travel = {"name": "Monster", "distance_in_km": 15}
-travel_object = Travel(**travel)

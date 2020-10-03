@@ -6,7 +6,7 @@ from Models.price_category import PriceCategory
 from pydantic import BaseModel
 
 
-class Entertainment(BaseModel):
+class Art(BaseModel):
     name: str
     price_category: PriceCategory
     category: str = None
@@ -14,11 +14,6 @@ class Entertainment(BaseModel):
     address: str = None
     votes: int = 0
     description: str = None
-    covid_factor: CovidFactor = 'High risk'
+    covid_factor: CovidFactor = 'Moderate risk'
     url: str = None
     created_at: datetime = datetime.now()
-
-
-entertainment = {"name": "Harry Potter", "price_category": "average", "district": "Centrum",
-             "category": "movies"}
-entertainment_object = Entertainment(**entertainment)

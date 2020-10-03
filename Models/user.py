@@ -29,5 +29,3 @@ class UserInDB(BaseModel):
     created_at: datetime = datetime.utcnow()
     role: UserRole
 
-# user = {"username": "test", "password": "pass1", "role": "admin"}
-# user_object = UserIn(**user)

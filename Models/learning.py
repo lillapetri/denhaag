@@ -17,6 +17,3 @@ class Learning(BaseModel):
     url: str = None
     created_at: datetime = datetime.now()
 
-
-learning = {"name": '' "Dutch", "price_category": "average", "subject": "language", "platform": "online"}
-learning_object = Learning(**learning)

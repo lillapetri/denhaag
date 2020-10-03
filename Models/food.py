@@ -26,8 +26,3 @@ class Food(BaseModel):
     price_category: str = None
     id: str = None
     # category: Set[Category] = None
-
-
-food = {"name": "L'oro di Napoli", "price_category": "average", "district": "Segbroek",
-        "cuisine": "Italian", "category": {"eat in", "order", "take away"}}
-food_object = Food(**food)
