@@ -1,5 +1,6 @@
 import enum
 from datetime import datetime
+from typing import List
 
 from Models.covid_factor import CovidFactor
 from Models.district import District
@@ -24,5 +25,5 @@ class Food(BaseModel):
     covid_factor: CovidFactor = 'Moderate risk'
     district: District
     price_category: str = None
-    id: str = None
+    services: List[str]
     # category: Set[Category] = None

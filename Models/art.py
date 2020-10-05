@@ -8,9 +8,9 @@ from pydantic import BaseModel
 
 class Art(BaseModel):
     name: str
-    price_category: PriceCategory
-    category: str = None
-    district: District
+    price_category: PriceCategory = None
+    type: str = None
+    district: District = None
     address: str = None
     votes: int = 0
     description: str = None

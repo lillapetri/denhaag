@@ -1,16 +1,18 @@
 from datetime import datetime
+from typing import List
 
 from Models.covid_factor import CovidFactor
 from Models.district import District
-from Models.price_category import PriceCategory
 from pydantic import BaseModel
 
 
 class Party(BaseModel):
     name: str
-    price_category: PriceCategory
-    category: str = None
-    district: District
+    date: str = None
+    time: str = None
+    ticket_price_in_euro: float = None
+    tags: List[str] = []
+    district: District = None
     address: str = None
     votes: int = 0
     description: str = None

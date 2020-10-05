@@ -39,8 +39,8 @@ async def db_insert_user(user):
 
 
 async def db_insert_food(food):
-    query = '''insert into food values(:name, :address, :cuisine, :votes, :description, :url, :created_at, 
-    :covid_factor, :district, :id, :price_category) returning name '''
+    query = '''insert into food values(:name, :address, :cuisine, :votes, :description, :url, :created_at, :covid_factor, 
+    :district, :id, :price_category, :services) returning name '''
     values = dict(food)
     result = await execute(query, False, values)
     return result
@@ -66,6 +66,30 @@ async def db_insert_travel(travel):
     query = '''insert into travel values(:name, :distance_in_km, :votes, :programs, :description, :covid_factor, 
     :url, :created_at, :id) returning name '''
     values = dict(travel)
+    result = await execute(query, False, values)
+    return result
+
+
+async def db_insert_friends(friends):
+    query = '''insert into friends values(:name, :platform, :votes, :description, :covid_factor, :url, :created_at, :id) 
+    returning name '''
+    values = dict(friends)
+    result = await execute(query, False, values)
+    return result
+
+
+async def db_insert_art(art):
+    query = '''insert into art values(:name, :price_category, :type, :district, :address, :votes, 
+    :description, :covid_factor, :url, :created_at, :id) returning name '''
+    values = dict(art)
+    result = await execute(query, False, values)
+    return result
+
+
+async def db_insert_party(party):
+    query = '''insert into party values(:name, :date, :time, :ticket_price_in_euro, :tags, :district, :address, :votes, 
+    :description, :covid_factor, :url, :created_at, :id) returning name '''
+    values = dict(party)
     result = await execute(query, False, values)
     return result
 
