@@ -8,6 +8,12 @@ def verify_password(plain_password, hashed_password):
     return pwd_context.verify(plain_password, hashed_password)
 
 
+async def db_fetch_category(category):
+    query = f'select * from {category}'
+    result = await fetch(query, False)
+    return result
+
+
 async def db_check_user(user):
     query = """select hashed_password from users where username = :username"""
     values = {'username': user.username}
@@ -91,10 +97,4 @@ async def db_insert_party(party):
     :description, :covid_factor, :url, :created_at, :id) returning name '''
     values = dict(party)
     result = await execute(query, False, values)
-    return result
-
-
-async def db_fetch_category(category):
-    query = f'select * from {category}'
-    result = await fetch(query, False)
     return result

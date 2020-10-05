@@ -7,3 +7,4 @@ pyvenv.cfg
 .git
 .idea
 Utils/constants.py
+Utils/redis_object.py

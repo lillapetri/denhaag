@@ -1,5 +1,7 @@
+import pickle
 from uuid import uuid4
 
+import Utils.redis_object as re
 from Models.art import Art
 from Models.food import Food
 from Models.friends import Friends
@@ -25,8 +27,17 @@ app_v1 = APIRouter()
 @app_v1.get('/{category}', tags=['Get any category'], description='Categories are: art, food, friends, learning, '
                                                                   'party, price_category, sport and travel.')
 async def get_category(category):
-    fetched_category = await db_fetch_category(category)
-    return fetched_category
+    redis_key = category
+    cached_result = await re.redis.get(redis_key)
+    if cached_result:
+        print('cached')
+        return pickle.loads(cached_result)
+    else:
+        fetched_category = await db_fetch_category(category)
+        category_to_cache = pickle.dumps(fetched_category)
+        await re.redis.set(redis_key, category_to_cache, expire=10)
+        print('not cached')
+        return fetched_category
 
 
 # Create new food instance

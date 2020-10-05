@@ -1,8 +1,11 @@
 from datetime import datetime
 from uuid import uuid4
 
+import Utils.redis_object as re
+import aioredis
 from API.v1 import app_v1
 from Models.user import UserIn
+from Utils.constants import REDIS_URL
 from Utils.db_functions import db_insert_user
 from Utils.db_object import db
 from Utils.security import authenticate, check_jwt_token, create_jwt_token, get_hashed_password
@@ -21,12 +24,15 @@ app.include_router(app_v1, prefix='/v1')
 async def connect_db():
     await db.connect()
     print('DB connected.')
+    re.redis = await aioredis.create_redis_pool(REDIS_URL)
+    print('Redis connected')
 
 
 @app.on_event('shutdown')
 async def disconnect_db():
     await db.disconnect()
-    print("DB disconnected")
+    re.redis.close()
+    await re.redis.wait_closed()
 
 
 # Test API route
@@ -57,8 +63,10 @@ async def create_new_user(user: UserIn):
 # Get token
 @app.post('/login', description='Returns JWT token.', tags=['Get access token'])
 async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
+    # Todo: refactor login
     username = form_data.username
     password = form_data.password
+
     user = {'username': username, 'password': password}
     user_dict = UserIn(**user)
     result = await authenticate(user_dict)
