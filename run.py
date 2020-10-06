@@ -1,3 +1,4 @@
+import pickle
 from datetime import datetime
 from uuid import uuid4
 
@@ -71,14 +72,21 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
     username = form_data.username
     password = form_data.password
 
-    user = {'username': username, 'password': password}
-    user_dict = UserIn(**user)
-    result = await authenticate(user_dict)
-    if result is None:
-        raise HTTPException(status_code=HTTP_401_UNAUTHORIZED)
+    redis_key = f'token:{username}, {password}'
+    cached_user = await re.redis.get(redis_key)
+
+    if not cached_user:
+        user_in = {'username': username, 'password': password}
+        user_dict = UserIn(**user_in)
+        authenticated_user = await authenticate(user_dict)
+        if authenticated_user is None:
+            raise HTTPException(status_code=HTTP_401_UNAUTHORIZED)
+        else:
+            token = create_jwt_token(authenticated_user)
+            await re.redis.set(redis_key, pickle.dumps(authenticated_user), expire=5 * 60)
+            return token
     else:
-        token = create_jwt_token(result)
-        return token
+        return create_jwt_token(pickle.loads(cached_user))
 
 
 @app.middleware('http')

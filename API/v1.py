@@ -35,7 +35,7 @@ async def get_category(category):
     else:
         fetched_category = await db_fetch_category(category)
         category_to_cache = pickle.dumps(fetched_category)
-        await re.redis.set(redis_key, category_to_cache, expire=10)
+        await re.redis.set(redis_key, category_to_cache, expire=4 * 60)
         print('not cached')
         return fetched_category
 

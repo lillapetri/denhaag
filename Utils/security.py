@@ -59,5 +59,3 @@ def final_checks(role: str):
         return False
     return False
 
-
-

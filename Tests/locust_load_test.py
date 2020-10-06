@@ -6,6 +6,13 @@ class LocustTasks(TaskSet):
     def token_test(self):
         self.client.post('/login', data={"username": "test", "password": "test"})
 
+    @task(2)
+    def category_test(self, categories_array=None):
+        if categories_array is None:
+            categories_array = ['food', 'learning', 'art', 'sport', 'party', 'friends', 'travel']
+        for category in categories_array:
+            self.client.get(f'/v1/{category}')
+
 
 class LoadTest(HttpUser):
     tasks = [LocustTasks]
