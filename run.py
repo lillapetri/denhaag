@@ -5,7 +5,7 @@ import Utils.redis_object as re
 import aioredis
 from API.v1 import app_v1
 from Models.user import UserIn
-from Utils.constants import REDIS_URL, TESTING, TEST_REDIS_URL
+from Utils.constants import REDIS_URL, TESTING
 from Utils.db_functions import db_insert_user
 from Utils.db_object import db
 from Utils.redis_object import check_test_redis
@@ -23,20 +23,19 @@ app.include_router(app_v1, prefix='/v1', dependencies=[Depends(check_test_redis)
 
 @app.on_event('startup')
 async def connect_db():
-    await db.connect()
-    print('DB connected.')
-    if TESTING:
-        re.redis = await aioredis.create_redis_pool(TEST_REDIS_URL)
-    else:
+    if not TESTING:
+        await db.connect()
+        print('DB connected.')
         re.redis = await aioredis.create_redis_pool(REDIS_URL)
-    print('Redis connected')
+        print('Redis connected')
 
 
 @app.on_event('shutdown')
 async def disconnect_db():
-    await db.disconnect()
-    re.redis.close()
-    await re.redis.wait_closed()
+    if not TESTING:
+        await db.disconnect()
+        re.redis.close()
+        await re.redis.wait_closed()
 
 
 # Test API route
