@@ -1,17 +1,24 @@
 import nest_asyncio
+from Utils.constants import TESTING
 from Utils.db_object import db
+
 nest_asyncio.apply()
 
 
 async def execute(query, is_many, values):
+    if TESTING:
+        await db.connect()
     if is_many:
         result = await db.execute_many(query=query, values=values)
     else:
         result = await db.execute(query=query, values=values)
+    await db.disconnect()
     return result
 
 
 async def fetch(query, is_one, values=None):
+    if TESTING:
+        await db.connect()
     if is_one:
         result = await db.fetch_one(query=query, values=values)
         if result is not None:
@@ -26,6 +33,7 @@ async def fetch(query, is_one, values=None):
             out = []
             for row in result:
                 out.append(dict(row))
+    await db.disconnect()
     return out
 
 # query = "insert into food values(:name, :address, :cuisine, :votes, :description, :url, :created_at, :covid_factor, " \
