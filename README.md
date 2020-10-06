@@ -3,7 +3,7 @@
 A full-stack application which collects together all the programs for bored people in (and around) the Hague.
 Stack I'm planning to use: 
 - back-end (Python): FastAPI, PostgreSQL, Docker
-- front-end (Typescript/Javascript): Next.js
+- front-end (Typescript/Javascript): Next.js, Heroku
 
 ![Mockup of the landing page](https://github.com/lillapetri/denhaag/blob/master/denhaag_hero_mockup.jpg)
 

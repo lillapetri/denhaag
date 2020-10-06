@@ -1,4 +1,5 @@
-from Utils.constants import DB_ADMIN, DB_HOST, DB_NAME, DB_PASSWORD
+from Utils.constants import DB_URL, TESTING, TEST_URL
 from databases import Database
 
-db = Database(f'postgresql://{DB_HOST}/{DB_NAME}?user={DB_ADMIN}&password={DB_PASSWORD}')
+url = TEST_URL if TESTING else DB_URL
+db = Database(url)

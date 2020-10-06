@@ -5,9 +5,10 @@ import Utils.redis_object as re
 import aioredis
 from API.v1 import app_v1
 from Models.user import UserIn
-from Utils.constants import REDIS_URL
+from Utils.constants import REDIS_URL, TESTING, TEST_REDIS_URL
 from Utils.db_functions import db_insert_user
 from Utils.db_object import db
+from Utils.redis_object import check_test_redis
 from Utils.security import authenticate, check_jwt_token, create_jwt_token, get_hashed_password
 from fastapi import Depends, FastAPI, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
@@ -17,14 +18,17 @@ from starlette.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_401_UN
 
 app = FastAPI(title="What to do in the Hague?", description="Freetime activities collected in and around the Hague",
               version='1.0.0')
-app.include_router(app_v1, prefix='/v1')
+app.include_router(app_v1, prefix='/v1', dependencies=[Depends(check_test_redis)])
 
 
 @app.on_event('startup')
 async def connect_db():
     await db.connect()
     print('DB connected.')
-    re.redis = await aioredis.create_redis_pool(REDIS_URL)
+    if TESTING:
+        re.redis = await aioredis.create_redis_pool(TEST_REDIS_URL)
+    else:
+        re.redis = await aioredis.create_redis_pool(REDIS_URL)
     print('Redis connected')
 
 
@@ -51,6 +55,7 @@ async def create_new_user(user: UserIn):
                   'created_at': datetime.utcnow(), 'id': uuid4(), 'role': role}
     try:
         new_user = await db_insert_user(user_in_db)
+        print(new_user)
         if new_user is not None:
             return {'response': f"{new_user} {user_in_db['role']} is created"}
     except Exception as e:
