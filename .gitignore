@@ -1,9 +1,0 @@
-__pycache__
-Include
-Lib
-Models/__pycache__
-Scripts
-pyvenv.cfg
-.git
-.idea
-Utils/constants.py
