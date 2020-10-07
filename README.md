@@ -1,4 +1,5 @@
 # What to do in the Hague?
+<i>This project is in development phase.<i/>
 
 A full-stack application which collects together all the programs for bored people in (and around) the Hague.
 Stack I'm planning to use: 
@@ -22,9 +23,10 @@ Stack I'm planning to use:
 <p>
 Back-end API documentation can be found <a  href="http://174.138.105.92/docs"  target="_blank">here</a>.
 </p>
+
+
 <i>Mockup designed in Figma.</i>
 
 
 ![Mockup of the landing page](https://github.com/lillapetri/denhaag/blob/master/denhaag_hero_mockup.jpg)
 
-This project is in development phase.

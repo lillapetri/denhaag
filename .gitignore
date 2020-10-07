@@ -1,6 +1,6 @@
-__pycache__
-Models/__pycache__
+Models/__init__.py
+API/Include
 Scripts
 .git
 Utils/constants.py
-API/Include
+Tests/.pytest_cache
