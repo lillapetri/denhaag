@@ -1,0 +1,6 @@
+__pycache__
+Models/__pycache__
+Scripts
+.git
+Utils/constants.py
+API/Include
