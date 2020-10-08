@@ -1,8 +1,10 @@
 # What to do in the Hague?
-<i>This project is in development phase.<i/>
+<h4>A full-stack application which collects together all the programs for bored people in (and around) the Hague.</h4>
+<br>
+<i>This project is in development phase.</i>
+<br>
+<p>Stack I'm planning to use: </p>
 
-A full-stack application which collects together all the programs for bored people in (and around) the Hague.
-Stack I'm planning to use: 
 <ul><h3>Back-end (Python): </h3>
   
   <li>framework: FastAPI </li>
