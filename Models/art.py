@@ -18,3 +18,5 @@ class Art(BaseModel):
     covid_factor: CovidFactor = 'Moderate risk'
     url: str = None
     created_at: datetime = datetime.now()
+    contact_email: str = None
+    contact_phone: str = None

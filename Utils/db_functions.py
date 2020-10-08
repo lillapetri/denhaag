@@ -15,6 +15,12 @@ async def db_fetch_category(category):
     return result
 
 
+async def db_fetch_filtered_category(category, property, value):
+    query = f'select * from {category} where {property}={value},'
+    result = await fetch(query, False)
+    return result
+
+
 async def db_check_user(user):
     query = """select hashed_password from users where username = :username"""
     values = {'username': user.username}
@@ -87,7 +93,7 @@ async def db_insert_friends(friends):
 
 async def db_insert_art(art):
     query = '''insert into art values(:id, :name, :price_category, :type, :district, :address, :votes, 
-    :description, :covid_factor, :url, :created_at) returning name '''
+    :description, :covid_factor, :url, :created_at, :contact_email, :contact_phone) returning name '''
     values = dict(art)
     result = await execute(query, False, values)
     return result

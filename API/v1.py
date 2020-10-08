@@ -12,15 +12,23 @@ from Models.learning import Learning
 from Models.party import Party
 from Models.sport import Sport
 from Models.travel import Travel
-from Utils.db_functions import db_fetch_category, db_insert_art, db_insert_food, db_insert_friends, db_insert_learning, \
-    db_insert_party, db_insert_sport, db_insert_travel
+from Utils.db_functions import db_fetch_category, db_fetch_filtered_category, db_insert_art, db_insert_food, \
+    db_insert_friends, db_insert_learning, db_insert_party, db_insert_sport, db_insert_travel
 
 app_v1 = APIRouter()
 
 
+# Get filtered category
+@app_v1.get('/{category}/?query')
+async def get_filtered_category(category, property):
+    value = property.value()
+    filtered_category = await db_fetch_filtered_category(category, property, value)
+    return filtered_category
+
+
 # Get all data in chosen category
 @app_v1.get('/{category}', tags=['Get any category'], description='Categories are: art, food, friends, learning, '
-                                                                  'party, price_category, sport and travel.')
+                                                                  'party, sport and travel.')
 async def get_category(category):
     redis_key = category
     cached_result = await re.redis.get(redis_key)
