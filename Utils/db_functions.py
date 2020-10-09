@@ -9,14 +9,16 @@ def verify_password(plain_password, hashed_password):
     return pwd_context.verify(plain_password, hashed_password)
 
 
-async def db_fetch_category(category):
-    query = f'select * from {category}'
-    result = await fetch(query, False)
+async def db_fetch_filtered_category(category, property, value):
+    query = f'select * from {category} where {property}=:{value}'
+    # TODO: handle cases with single quotes
+    values = {f"{value}": value.replace("_", " ")}
+    result = await fetch(query, False, values)
     return result
 
 
-async def db_fetch_filtered_category(category, property, value):
-    query = f'select * from {category} where {property}={value},'
+async def db_fetch_category(category):
+    query = f'select * from {category}'
     result = await fetch(query, False)
     return result
 

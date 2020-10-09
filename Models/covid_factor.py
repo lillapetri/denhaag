@@ -2,7 +2,7 @@ from enum import Enum
 
 
 class CovidFactor(str, Enum):
-    safe: str = "Safe"
-    moderate_risk: str = "Moderate risk"
-    high_risk: str = "High risk"
-    forbidden: str = "Forbidden"
+    safe: str = "safe"
+    moderate_risk: str = "moderate risk"
+    high_risk: str = "high risk"
+    forbidden: str = "forbidden"
