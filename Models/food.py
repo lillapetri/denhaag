@@ -28,3 +28,4 @@ class Food(BaseModel):
     price_category: str = None
     services: List[str]
     # category: Set[Category] = None
+
