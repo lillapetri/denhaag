@@ -12,6 +12,7 @@ from Models.learning import Learning
 from Models.party import Party
 from Models.sport import Sport
 from Models.travel import Travel
+from Models.category import Category
 from Utils.db_functions import db_fetch_category, db_fetch_filtered_category, db_insert_art, db_insert_food, \
     db_insert_friends, db_insert_learning, db_insert_party, db_insert_sport, db_insert_travel
 
@@ -19,18 +20,24 @@ app_v1 = APIRouter()
 
 
 # Get filtered category
-@app_v1.get('/{category}/?query')
-async def get_filtered_category(category, property):
-    value = property.value()
-    filtered_category = await db_fetch_filtered_category(category, property, value)
-    return filtered_category
+@app_v1.get('/{category}/{property}/{value}')
+async def get_filtered_category(category: Category, property, value):
+    try:
+        filtered_category = await db_fetch_filtered_category(category, property, value)
+        return filtered_category
+    except Exception as e:
+        print(e)
+        detail = 'Something went wrong. Please try again.'
+        if hasattr(e, 'detail'):
+            detail = e.detail
+        raise HTTPException(status_code=HTTP_400_BAD_REQUEST, detail=detail)
 
 
 # Get all data in chosen category
 @app_v1.get('/{category}', tags=['Get any category'], description='Categories are: art, food, friends, learning, '
                                                                   'party, sport and travel.')
-async def get_category(category):
-    redis_key = category
+async def get_category(category: Category):
+    redis_key = str(category)
     cached_result = await re.redis.get(redis_key)
     if cached_result:
         print('cached')
@@ -38,7 +45,7 @@ async def get_category(category):
     else:
         fetched_category = await db_fetch_category(category)
         category_to_cache = pickle.dumps(fetched_category)
-        await re.redis.set(redis_key, category_to_cache, expire=4 * 60)
+        await re.redis.set(redis_key, category_to_cache, expire=4)
         print('not cached')
         return fetched_category
 
