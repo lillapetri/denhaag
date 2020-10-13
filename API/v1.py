@@ -19,7 +19,7 @@ app_v1 = APIRouter()
 
 
 # Get filtered category
-@app_v1.get('/{category}/{column}={value}')
+@app_v1.get('/{category}/{column}={value}', tags=['Get filtered category'])
 async def get_filtered_category(category: Category, column, value):
     try:
         filtered_category = await db.fetch_filtered_category(category, column, value)
@@ -50,7 +50,7 @@ async def get_category(category: Category):
 
 
 # Update category instance partially
-@app_v1.patch('/{category}/{uuid}')
+@app_v1.patch('/{category}/{uuid}', tags=['Update category instance partially'])
 async def update_category_instance(category: Category, uuid: str, query=Body(..., embed=True)):
     column = [*query][0]
     value = query[column]
@@ -66,7 +66,7 @@ async def update_category_instance(category: Category, uuid: str, query=Body(...
 
 
 # Delete category instance
-@app_v1.delete('/{category}/{uuid}')
+@app_v1.delete('/{category}/{uuid}', tags=['Delete instance'])
 async def delete_category_instance(category: Category, uuid: str):
     try:
         deleted_instance = await db.delete_instance(category, uuid)
