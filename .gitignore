@@ -1,6 +1,10 @@
+__init__.py
 Models/__init__.py
 API/Include
 Scripts
 .git
 Utils/constants.py
+Utils/__init__.py
 Tests/.pytest_cache
+Tests/__init__.py
+Dockerfile

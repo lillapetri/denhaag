@@ -8,7 +8,7 @@ from passlib.context import CryptContext
 
 from Models.user import UserOut
 from Utils.constants import JWT_ALGORITHM, JWT_EXPIRATION_TIME_MINUTES, JWT_SECRET_KEY
-from Utils.db_functions import db_check_user, db_check_username
+from Utils.db_functions import check_user, check_username
 
 pwd_context = CryptContext(schemes=['bcrypt'])
 oauth_schema = OAuth2PasswordBearer(tokenUrl='/token')
@@ -20,7 +20,7 @@ def get_hashed_password(password):
 
 # Authenticate and give JWT token
 async def authenticate(user):
-    is_valid = await db_check_user(user)
+    is_valid = await check_user(user)
     if is_valid:
         return user
     return None
@@ -31,7 +31,6 @@ def create_jwt_token(user: UserOut):
     expiration = datetime.utcnow() + timedelta(minutes=JWT_EXPIRATION_TIME_MINUTES)
     jwt_payload = {"sub": user.username, "exp": expiration, "role": user.role}
     jwt_token = jwt.encode(jwt_payload, JWT_SECRET_KEY, algorithm=JWT_ALGORITHM).decode('utf-8')
-
     return {"access_token": "Bearer " + jwt_token}
 
 
@@ -43,7 +42,7 @@ async def check_jwt_token(token: str = Depends(oauth_schema)):
         expiration = jwt_payload.get('exp')
         role = jwt_payload.get('role')
         if time() < expiration:
-            is_valid = await db_check_username(username)
+            is_valid = await check_username(username)
             if is_valid:
                 return final_checks(role)
     except Exception as e:

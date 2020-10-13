@@ -17,7 +17,7 @@ class Category(str, enum.Enum):
 
 class Food(BaseModel):
     name: str
-    address: str = None
+    address: List[str] = None
     cuisine: str
     votes: int = 0
     description: str = None

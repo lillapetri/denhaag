@@ -9,21 +9,36 @@ def verify_password(plain_password, hashed_password):
     return pwd_context.verify(plain_password, hashed_password)
 
 
-async def db_fetch_filtered_category(category, property, value):
-    query = f'select * from {category} where {property}=:{value}'
-    # TODO: handle cases with single quotes
-    values = {f"{value}": value.replace("_", " ")}
-    result = await fetch(query, False, values)
-    return result
-
-
-async def db_fetch_category(category):
+async def fetch_category(category):
     query = f'select * from {category}'
     result = await fetch(query, False)
     return result
 
 
-async def db_check_user(user):
+async def fetch_filtered_category(category, column, value):
+    query = f'select * from {category} where {column} = :{column}'
+    # TODO: handle cases with single quotes
+    values = {f"{column}": value.replace('-', ' ')}
+    result = await fetch(query, False, values)
+    return result
+
+
+async def update_category(category, id, column, value):
+    query = f'update {category} set {column} = :{column} where id = :id returning name'
+    # TODO: handle cases with single quotes
+    values = {"id": id, f"{column}": value}
+    result = await execute(query, False, values)
+    return result
+
+
+async def delete_instance(category, id):
+    query = f'delete from {category} where id = :id returning name'
+    values = {"id": id}
+    result = await execute(query, False, values)
+    return result
+
+
+async def check_user(user):
     query = """select hashed_password from users where username = :username"""
     values = {'username': user.username}
     response = await fetch(query, True, values)
@@ -35,7 +50,7 @@ async def db_check_user(user):
         return False
 
 
-async def db_check_username(username):
+async def check_username(username):
     query = '''select * from users where username = :username'''
     values = {'username': username}
     result = await fetch(query, True, values)
@@ -45,7 +60,7 @@ async def db_check_username(username):
         return True
 
 
-async def db_insert_user(user):
+async def insert_user(user):
     query = '''insert into users values(:id, :username, :hashed_password, :is_active, :created_at, :role) returning 
     username '''
     values = dict(user)
@@ -53,7 +68,7 @@ async def db_insert_user(user):
     return result
 
 
-async def db_insert_food(food):
+async def insert_food(food):
     query = '''insert into food values(:id, :name, :address, :cuisine, :votes, :description, :url, :created_at, :covid_factor, 
     :district, :price_category, :services) returning name '''
     values = dict(food)
@@ -61,7 +76,7 @@ async def db_insert_food(food):
     return result
 
 
-async def db_insert_learning(learning):
+async def insert_learning(learning):
     query = '''insert into learning values(:id, :name, :language, :price_category, :subject, :platform, :votes, 
     :description, :covid_factor, :url, :created_at) returning name '''
     values = dict(learning)
@@ -69,7 +84,7 @@ async def db_insert_learning(learning):
     return result
 
 
-async def db_insert_sport(sport):
+async def insert_sport(sport):
     query = '''insert into sport values(:id, :name, :type, :price_category, :environment, :district, :address, :votes, 
     :description, :covid_factor, :url, :created_at) returning name '''
     values = dict(sport)
@@ -77,7 +92,7 @@ async def db_insert_sport(sport):
     return result
 
 
-async def db_insert_travel(travel):
+async def insert_travel(travel):
     query = '''insert into travel values(:id, :name, :distance_in_km, :votes, :programs, :description, :covid_factor, 
     :url, :created_at) returning name '''
     values = dict(travel)
@@ -85,7 +100,7 @@ async def db_insert_travel(travel):
     return result
 
 
-async def db_insert_friends(friends):
+async def insert_friends(friends):
     query = '''insert into friends values(:id, :name, :platform, :votes, :description, :covid_factor, :url, :created_at) 
     returning name '''
     values = dict(friends)
@@ -93,7 +108,7 @@ async def db_insert_friends(friends):
     return result
 
 
-async def db_insert_art(art):
+async def insert_art(art):
     query = '''insert into art values(:id, :name, :price_category, :type, :district, :address, :votes, 
     :description, :covid_factor, :url, :created_at, :contact_email, :contact_phone) returning name '''
     values = dict(art)
@@ -101,7 +116,7 @@ async def db_insert_art(art):
     return result
 
 
-async def db_insert_party(party):
+async def insert_party(party):
     query = '''insert into party values(:id, :name, :date, :time, :ticket_price_in_euro, :tags, :district, :address, 
     :votes, :description, :covid_factor, :url, :created_at) returning name '''
     values = dict(party)

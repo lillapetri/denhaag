@@ -13,7 +13,7 @@ import Utils.redis_object as re
 from API.v1 import app_v1
 from Models.user import UserIn
 from Utils.constants import IS_PRODUCTION, REDIS_URL, REDIS_URL_PRODUCTION, TESTING
-from Utils.db_functions import db_insert_user
+from Utils.db_functions import insert_user
 from Utils.db_object import db
 from Utils.redis_object import check_test_redis
 from Utils.security import authenticate, check_jwt_token, create_jwt_token, get_hashed_password
@@ -56,7 +56,7 @@ async def create_new_user(user: UserIn):
     user_in_db = {'username': username, 'hashed_password': get_hashed_password(password), 'is_active': True,
                   'created_at': datetime.utcnow(), 'id': uuid4(), 'role': role}
     try:
-        new_user = await db_insert_user(user_in_db)
+        new_user = await insert_user(user_in_db)
         print(new_user)
         if new_user is not None:
             return {'response': f"{new_user} {user_in_db['role']} is created"}
@@ -98,9 +98,11 @@ async def middleware(request: Request, call_next):
     if request.method != 'GET' and not str(request.url).__contains__('login'):
         try:
             jwt_token = request.headers['Authorization'].split('Bearer ')[1]
+            print(request.headers['Authorization'])
             is_valid = await check_jwt_token(jwt_token)
 
         except Exception as e:
+            print(e)
             is_valid = False
 
         if not is_valid:
