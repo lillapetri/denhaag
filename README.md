@@ -22,10 +22,6 @@
 
 </ul>
 
-<p>
-Back-end API documentation can be found <a  href="https://api.thehague.fun/docs"  target="_blank">here</a>.
-</p>
-
 
 <i>Mockup designed in Figma.</i>
 
